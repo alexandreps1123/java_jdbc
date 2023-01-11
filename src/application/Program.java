@@ -167,8 +167,7 @@ public class Program {
             st = conn.prepareStatement(
                 "DELETE FROM department "
                 + "WHERE "
-                + "Id = ?",
-                Statement.RETURN_GENERATED_KEYS);
+                + "Id = ?");
 
                 st.setInt(1, 5);
 
