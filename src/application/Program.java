@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import db.DB;
+import db.DBIntegrityException;
 
 public class Program {
     public static void main(String[] args) {
@@ -19,7 +20,9 @@ public class Program {
 
         // insertDepartment();
 
-        updateBaseSalary();
+        // updateBaseSalary();
+
+        deleteDepartment();
     }
 
     public static void selectAndPrintDepartment() {
@@ -136,11 +139,38 @@ public class Program {
                 "UPDATE seller "
                 + "SET BaseSalary = BaseSalary + ? "
                 + "WHERE "
-                + "(DepartmentId = ?)",
-                Statement.RETURN_GENERATED_KEYS);
+                + "(DepartmentId = ?)");
 
                 st.setDouble(1, 200.0);
                 st.setInt(2, 2);
+
+            int rowsAffected = st.executeUpdate();
+
+            System.out.println("Done! Rows affected: " + rowsAffected);
+        }
+        catch (SQLException e) {
+            throw new DBIntegrityException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+            DB.closeConnection();
+        }
+    }
+
+    public static void deleteDepartment() {
+        Connection conn = null;
+        PreparedStatement st = null;
+
+        try {
+            conn = DB.getConnection();
+
+            st = conn.prepareStatement(
+                "DELETE FROM department "
+                + "WHERE "
+                + "Id = ?",
+                Statement.RETURN_GENERATED_KEYS);
+
+                st.setInt(1, 5);
 
             int rowsAffected = st.executeUpdate();
 
