@@ -1,0 +1,6 @@
+*.class
+
+jdbc-connectors/
+
+.metals/
+.vscode/
